@@ -5,7 +5,7 @@ deleting, searching and adding up transaction records.
 
 # Import libraries
 from flask import Flask, render_template, redirect, url_for, request
-from database import load_data, save_data
+from Data.database import load_data, save_data
 
 
 # Instantiate Flask functionality
@@ -15,6 +15,7 @@ app = Flask(__name__)
 # Read operation
 @app.route("/")
 def get_transactions():
+    '''Get transaction page'''
     transactions = load_data()
     save_data(transactions)
     return render_template('transactions.html', transactions=transactions)
@@ -23,6 +24,7 @@ def get_transactions():
 # Create operation
 @app.route('/add',methods=['GET','POST'])
 def add_transaction():
+    '''This function enables user to add a new transaction to the transaction list'''
     if request.method == 'GET':
         return render_template('form.html')
     
@@ -33,7 +35,7 @@ def add_transaction():
 
         transaction = {
             'id': len(transactions) + 1, # incrementing id value by 1 
-            'date': request.form['date'], #  request.form function parses the date received from the entry made in the form
+            'date': request.form['date'], # request.form function parses the date received from the entry made in the form
             'amount': float(request.form['amount']) #  request.form function parses the amount received from the entry made in the form
         }
         # Appending the new transaction to the transactions list
@@ -49,6 +51,7 @@ def add_transaction():
 # Update operation
 @app.route('/edit/<int:transaction_id>', methods=['GET','POST'])
 def edit_transaction(transaction_id):
+    '''This function enables user to edit a the transaction list'''
     transactions = load_data()
 
     if request.method == 'GET':
@@ -74,6 +77,7 @@ def edit_transaction(transaction_id):
 # Delete operation
 @app.route("/delete/<int:transaction_id>", methods=['GET','POST'])
 def delete_transaction(transaction_id):
+    '''This function finds duplicate id and delete the id from the transaction list'''
     transactions = load_data()
 
     for transaction in transactions:
@@ -89,6 +93,7 @@ def delete_transaction(transaction_id):
 # 
 @app.route('/search', methods=['GET','POST'])
 def search_transactions():
+    '''This function search for list of transaction id which fall between a given range'''
     if request.method == "GET":
         return render_template('search.html')
     
@@ -113,6 +118,7 @@ def search_transactions():
 # summing all the total balance of the transactions
 @app.route('/balance', methods=['GET','POST'])
 def total_balance():
+    '''This function sum all the amount of transactions in the list'''
     transactions = load_data()
     balance = sum(transaction['amount'] for transaction in transactions)
     return render_template('transactions.html',transactions=transactions, balance=balance)
