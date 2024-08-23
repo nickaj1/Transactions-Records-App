@@ -29,6 +29,21 @@
             gap: 10px;
         }
 
+        .total-balance {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            vertical-align: middle;
+        }
+
+        .search-transactions {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            vertical-align: middle;
+        }
+
         .btn-primary {
             background-color: #f6d365;
             border-color: #f6d365;
@@ -65,10 +80,18 @@
                 {% endfor %}
             </tbody>
         </table>
+            <p> <strong>Total Balance: {{balance}} </strong></p>
 
         <div class="d-flex justify-content-center">
             <a class="btn btn-success" href="{{ url_for('add_transaction') }}">Add Transaction</a>
         </div>
+        <div class="search-transactions">
+            <a class="btn btn-success" href="{{ url_for('search_transactions') }}">Search Transaction</a>
+        </div>
+        <div class="total-balance">
+            <a class="btn btn-success" href="{{ url_for('total_balance') }}">View Total Balance</a>
+        </div>
     </div>
+    
 </body>
 </html>
